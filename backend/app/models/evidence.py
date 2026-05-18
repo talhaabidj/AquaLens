@@ -11,6 +11,11 @@ from sqlmodel import Field, SQLModel
 from app.models.base import IDMixin, TimestampMixin
 
 
+def _enum_values(enum_class: type[StrEnum]) -> list[str]:
+    """Persist enum .value strings (DB enum labels), not enum member names."""
+    return [member.value for member in enum_class]
+
+
 class WaterColor(StrEnum):
     CLEAR = "clear"
     BLUE = "blue"
@@ -46,9 +51,25 @@ class FieldEvidence(IDMixin, TimestampMixin, SQLModel, table=True):
         )
     )
     water_color: WaterColor = Field(
-        sa_column=Column(Enum(WaterColor, name="water_color"), nullable=False)
+        sa_column=Column(
+            Enum(
+                WaterColor,
+                name="water_color",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
     )
-    odor: Odor = Field(sa_column=Column(Enum(Odor, name="water_odor"), nullable=False))
+    odor: Odor = Field(
+        sa_column=Column(
+            Enum(
+                Odor,
+                name="water_odor",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
+    )
     algae_present: bool = Field(default=False, nullable=False)
     dead_fish_count: int = Field(default=0, ge=0)
     rainfall_mm: float = Field(default=0.0, ge=0.0)

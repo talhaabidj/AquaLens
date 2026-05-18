@@ -12,6 +12,11 @@ from sqlmodel import Field, SQLModel
 from app.models.base import IDMixin, TimestampMixin
 
 
+def _enum_values(enum_class: type[StrEnum]) -> list[str]:
+    """Persist enum .value strings (DB enum labels), not enum member names."""
+    return [member.value for member in enum_class]
+
+
 class IndexName(StrEnum):
     NDWI = "NDWI"
     MNDWI = "MNDWI"
@@ -33,7 +38,16 @@ class SpectralIndex(IDMixin, TimestampMixin, SQLModel, table=True):
             index=True,
         )
     )
-    name: IndexName = Field(sa_column=Column(Enum(IndexName, name="index_name"), nullable=False))
+    name: IndexName = Field(
+        sa_column=Column(
+            Enum(
+                IndexName,
+                name="index_name",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
+    )
     value: float = Field(nullable=False)
     min_value: float | None = Field(default=None)
     max_value: float | None = Field(default=None)

@@ -199,3 +199,9 @@ def test_session_with_completed_status_smoke(db_session: Session) -> None:
     sess = _seed_session(db_session, wb)
     loaded = db_session.exec(select(MonitoringSession).where(MonitoringSession.id == sess.id)).one()
     assert loaded.status is SessionStatus.COMPLETE
+
+
+def test_session_status_enum_uses_value_labels() -> None:
+    """Guards against enum-name writes (PENDING) on Postgres enum columns."""
+    status_enum = MonitoringSession.__table__.c.status.type
+    assert status_enum.enums == [status.value for status in SessionStatus]

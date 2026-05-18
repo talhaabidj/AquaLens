@@ -27,6 +27,11 @@ from sqlmodel import Field, SQLModel
 from app.models.base import IDMixin, TimestampMixin
 
 
+def _enum_values(enum_class: type[StrEnum]) -> list[str]:
+    """Persist enum .value strings (DB enum labels), not enum member names."""
+    return [member.value for member in enum_class]
+
+
 class MemoryKind(StrEnum):
     """What kind of note this is.
 
@@ -69,7 +74,16 @@ class AgentMemory(IDMixin, TimestampMixin, SQLModel, table=True):
             nullable=False,
         )
     )
-    kind: MemoryKind = Field(sa_column=Column(Enum(MemoryKind, name="memory_kind"), nullable=False))
+    kind: MemoryKind = Field(
+        sa_column=Column(
+            Enum(
+                MemoryKind,
+                name="memory_kind",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
+    )
     note: str = Field(sa_column=Column(String(500), nullable=False))
     confidence: float = Field(
         sa_column=Column(Float, nullable=False),

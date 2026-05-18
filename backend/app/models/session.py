@@ -13,6 +13,11 @@ from sqlmodel import Field, SQLModel
 from app.models.base import IDMixin, TimestampMixin
 
 
+def _enum_values(enum_class: type[StrEnum]) -> list[str]:
+    """Persist enum .value strings (DB enum labels), not enum member names."""
+    return [member.value for member in enum_class]
+
+
 class SessionStatus(StrEnum):
     PENDING = "pending"
     PROCESSING = "processing"
@@ -53,7 +58,14 @@ class MonitoringSession(IDMixin, TimestampMixin, SQLModel, table=True):
 
     status: SessionStatus = Field(
         default=SessionStatus.PENDING,
-        sa_column=Column(Enum(SessionStatus, name="session_status"), nullable=False),
+        sa_column=Column(
+            Enum(
+                SessionStatus,
+                name="session_status",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        ),
     )
     status_message: str | None = Field(default=None, sa_column=Column(String(500)))
 
@@ -71,5 +83,11 @@ class MonitoringSession(IDMixin, TimestampMixin, SQLModel, table=True):
     water_fraction: float | None = Field(default=None, ge=0.0, le=1.0)
     aoi_type: AOIType | None = Field(
         default=None,
-        sa_column=Column(Enum(AOIType, name="aoi_type")),
+        sa_column=Column(
+            Enum(
+                AOIType,
+                name="aoi_type",
+                values_callable=_enum_values,
+            )
+        ),
     )

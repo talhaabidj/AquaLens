@@ -12,6 +12,11 @@ from sqlmodel import Field, SQLModel
 from app.models.base import IDMixin, TimestampMixin
 
 
+def _enum_values(enum_class: type[StrEnum]) -> list[str]:
+    """Persist enum .value strings (DB enum labels), not enum member names."""
+    return [member.value for member in enum_class]
+
+
 class RiskLevel(StrEnum):
     LOW = "low"
     MEDIUM = "medium"
@@ -37,8 +42,26 @@ class RiskAssessment(IDMixin, TimestampMixin, SQLModel, table=True):
         )
     )
     score: float = Field(nullable=False, ge=0.0, le=1.0)
-    level: RiskLevel = Field(sa_column=Column(Enum(RiskLevel, name="risk_level"), nullable=False))
-    urgency: Urgency = Field(sa_column=Column(Enum(Urgency, name="risk_urgency"), nullable=False))
+    level: RiskLevel = Field(
+        sa_column=Column(
+            Enum(
+                RiskLevel,
+                name="risk_level",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
+    )
+    urgency: Urgency = Field(
+        sa_column=Column(
+            Enum(
+                Urgency,
+                name="risk_urgency",
+                values_callable=_enum_values,
+            ),
+            nullable=False,
+        )
+    )
     recommendation: str = Field(sa_column=Column(String(1200), nullable=False))
     reasoning: str = Field(sa_column=Column(String(4000), nullable=False))
     limitations: str = Field(sa_column=Column(String(2000), nullable=False))
