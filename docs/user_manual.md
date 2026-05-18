@@ -2,7 +2,7 @@
 
 This is a quick tour of AquaLens from the user’s point of view. The
 audience is anyone who lands on the live deployment for the first time:
-field teams, environmental analysts, hackathon judges.
+field teams, environmental analysts, and technical evaluators.
 
 ## 1. Land on the marketing page
 

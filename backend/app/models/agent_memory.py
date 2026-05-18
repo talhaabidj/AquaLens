@@ -2,9 +2,8 @@
 
 Each row is a short, Gemini-distilled observation about a specific
 water body. The Historian reads these notes at the start of a session
-and writes new ones at the end so the agent layer "manages multi-step
-tasks over time" — the exact wording of the hackathon's Agentic
-Workflows track.
+and writes new ones at the end so the agent layer manages multi-step
+tasks over time across repeated monitoring runs.
 
 The ``embedding`` column holds a 768-dim ``text-embedding-004`` vector
 of the note text so the Historian can recall semantically related

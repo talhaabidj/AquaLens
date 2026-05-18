@@ -165,8 +165,8 @@ flowchart LR
 
 The same Historian agent both *reads* prior memory at the start of a
 new session and *writes* a fresh distilled observation at the end.
-That's what makes the agent layer satisfy the hackathon's
-"manages multi-step tasks over time" criterion.
+That continuity is what lets the agent layer genuinely manage
+multi-step work over time instead of acting as a stateless chatbot.
 
 ```mermaid
 sequenceDiagram

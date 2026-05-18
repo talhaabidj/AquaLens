@@ -67,8 +67,8 @@ def get_report(session_id: UUID, db: Session = Depends(get_session)) -> FileResp
         ).all()
     )
 
-    # Rebuild every time — cheap enough at hackathon scale and avoids serving
-    # stale layouts once the template has been updated.
+    # Rebuild every time — render cost is low enough for on-demand usage and
+    # avoids serving stale layouts once the template has been updated.
     html = render_report_html(
         session=sess,
         water_body=water_body,

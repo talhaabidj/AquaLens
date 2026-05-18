@@ -15,8 +15,7 @@ Combines four flavours of Gemini capability in a single tool loop:
 The agent also writes one or two short notes back into
 ``agent_memory`` so future Historian runs for the same water body
 already know what we learned today. That's the persistent-memory
-half of the hackathon's "manages multi-step tasks over time"
-criterion.
+half of the product's over-time continuity model.
 """
 
 from __future__ import annotations
