@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "About",
   description:
-    "AquaLens is built by Talha Abid for the AI Agent Olympics 2026 hackathon at Milan AI Week.",
+    "AquaLens is an open-source freshwater monitoring platform with a deterministic remote-sensing core and a traceable Gemini agent workflow.",
   path: "/about",
 });
 
@@ -51,19 +51,14 @@ export default function AboutPage() {
 
         <FadeIn as="section">
           <h2 className="font-display text-2xl text-foreground tracking-tight">
-            Hackathon context
+            Project context
           </h2>
           <p>
-            AquaLens was built for the{" "}
-            <a
-              className="text-foreground underline decoration-aqua-500 underline-offset-4"
-              href="https://luma.com/5fxlxfl5"
-              rel="noreferrer"
-            >
-              AI Agent Olympics
-            </a>{" "}
-            hackathon at Milan AI Week 2026, in the Agentic Workflows and Multimodal
-            Intelligence tracks. The repository is open-source under the MIT License.
+            AquaLens is designed as a deployment-ready product: deterministic
+            where numbers must be reproducible, agentic where context and
+            communication matter. The repository is open-source under the MIT
+            License and structured for real-world pilots in municipal,
+            environmental, and enterprise workflows.
           </p>
         </FadeIn>
 
